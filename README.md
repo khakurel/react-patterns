@@ -1,7 +1,7 @@
 React
 =====
 
-*Mostly reasonable patterns for writing React on Rails*
+*Mostly reasonable patterns for writing React Component in 2017*
 
 ## Table of Contents
 
@@ -29,25 +29,15 @@ React
   1. [Tables](#tables)
 1. Libraries
   1. [classnames](#classnames)
-1. Other
-  1. [JSX](#jsx)
-  1. [ES2015](#es2015)
-  1. [react-rails](#react-rails)
-  1. [rails-assets](#rails-assets)
-  1. [flux](#flux)
+
 
 ---
 
 ## Scope
 
-This is how we write [React.js](https://facebook.github.io/react/) on Rails.
-We've struggled to find the happy path. Recommendations here represent a good
-number of failed attempts. If something seems out of place, it probably is;
-let us know what you've found.
+This is forked from [https://github.com/khakurel/react-patterns] to meet our requrement
 
-All examples written in ES2015 syntax now that the
-[official react-rails gem](https://github.com/reactjs/react-rails) ships with
-[babel](http://babeljs.io/).
+All examples written in ES2015 syntax with transform-class-properties [https://babeljs.io/docs/plugins/transform-class-properties/]
 
 **[⬆ back to top](#table-of-contents)**
 
@@ -65,19 +55,31 @@ All examples written in ES2015 syntax now that the
 * proptypes
 
 ```javascript
-class Person extends React.Component {
+
+import React, {Componet,PropTypes } from 'react'
+
+class Person extends Component {
+    
+  static propTypes = {
+      name: PropTypes.string
+  }
+         
+  static defaultProps = {
+    name: 'Guest'    
+  }     
+    
   constructor (props) {
     super(props);
 
     this.state = { smiling: false };
-
-    this.handleClick = () => {
-      this.setState({smiling: !this.state.smiling});
-    };
   }
+  
+   handleClick = () => {
+        this.setState({smiling: !this.state.smiling});
+   };
 
   componentWillMount () {
-    // add event listeners (Flux Store, WebSocket, document, etc.)
+    // add event listeners (Store, WebSocket, document, etc.)
   }
 
   componentDidMount () {
@@ -85,7 +87,7 @@ class Person extends React.Component {
   }
 
   componentWillUnmount () {
-    // remove event listeners (Flux Store, WebSocket, document, etc.)
+    // remove event listeners (Store, WebSocket, document, etc.)
   }
 
   get smilingMessage () {
@@ -101,13 +103,6 @@ class Person extends React.Component {
   }
 }
 
-Person.defaultProps = {
-  name: 'Guest'
-};
-
-Person.propTypes = {
-  name: React.PropTypes.string
-};
 ```
 
 **[⬆ back to top](#table-of-contents)**
@@ -667,53 +662,3 @@ render () {
 ```
 
 Read: [Class Name Manipulation](https://github.com/JedWatson/classnames/blob/master/README.md)
-
-**[⬆ back to top](#table-of-contents)**
-
-## JSX
-
-We used to have some hardcore CoffeeScript lovers is the group. The unfortunate
-thing about writing templates in CoffeeScript is that it leaves you on the hook
-when certain implementations changes that JSX would normally abstract.
-
-We no longer recommend using CoffeeScript to write `render`.
-
-For posterity, you can read about how we used CoffeeScript, when using CoffeeScript was
-non-negotiable: [CoffeeScript and JSX](https://slack-files.com/T024L9M0Y-F02HP4JM3-80d714).
-
-**[⬆ back to top](#table-of-contents)**
-
-## ES2015
-
-[react-rails](https://github.com/reactjs/react-rails) now ships with [babel](babeljs.io). Anything
-you can do in Babel, you can do in Rails. See the documentation for additional config.
-
-**[⬆ back to top](#table-of-contents)**
-
-## react-rails
-
-[react-rails](https://github.com/reactjs/react-rails) should be used in all
-Rails apps that use React. It provides the perfect amount of glue between Rails
-conventions and React.
-
-**[⬆ back to top](#table-of-contents)**
-
-## rails-assets
-[rails-assets](https://rails-assets.org) should be considered for bundling
-js/css assets into your applications. The most popular React-libraries we use
-are registered on [Bower](http://bower.io) and can be easily added through
-Bundler and react-assets.
-
-**caveats: rails-assets gives you access to bower projects via Sprockets
-requires. This is a win for the traditionally hand-wavy approach that Rails
-takes with JavaScript. This approach doesn't buy you modularity or the ability to
-interop with JS tooling that requires modules.**
-
-**[⬆ back to top](#table-of-contents)**
-
-## flux
-
-Use [Alt](http://alt.js.org) for flux implementation. Alt is true to the flux
-pattern with the best documentation available.
-
-**[⬆ back to top](#table-of-contents)**
